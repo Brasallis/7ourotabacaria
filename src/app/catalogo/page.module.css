@@ -1,0 +1,64 @@
+.main {
+  min-height: calc(100vh - 80px);
+  padding: 4rem 5%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.filterBtn {
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.filterBtn:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: var(--gold-primary);
+}
+
+.filterBtn.active {
+  background: var(--gold-gradient);
+  color: var(--text-inverse);
+  border-color: transparent;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+.empty {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}

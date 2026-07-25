@@ -1,66 +1,93 @@
-import Image from "next/image";
 import styles from "./page.module.css";
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import ProductCard from "@/components/ProductCard";
 
-export default function Home() {
+// Adicionar flag de revalidação para que a home atualize sempre (ou usar cache com tempo)
+export const revalidate = 0;
+
+export default async function Home() {
+  // Busca até 6 produtos que sejam destaques (isPromotion) ou que tenham desconto
+  const promoProducts = await prisma.product.findMany({
+    where: { 
+      isVisible: true,
+      OR: [
+        { isPromotion: true },
+        { promotionalPrice: { not: null } }
+      ]
+    },
+    take: 6,
+    orderBy: { createdAt: "desc" },
+  });
+
+  // Busca todos os outros produtos para a vitrine principal
+  const allProducts = await prisma.product.findMany({
+    where: { isVisible: true },
+    orderBy: { createdAt: "desc" },
+  });
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className={styles.main}>
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1 className={styles.title}>
+            A Experiência <span className="gold-text">Premium</span> em Tabacaria
+          </h1>
+          <p className={styles.subtitle}>
+            Explore nossa seleção exclusiva de produtos com a melhor qualidade e entrega garantida.
           </p>
+          <div className={styles.actions}>
+            <Link href="/catalogo" className="btn-primary">
+              Ver Catálogo
+            </Link>
+            <Link href="#promocoes" className="btn-secondary">
+              Promoções
+            </Link>
+          </div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section id="promocoes" className={styles.promotions}>
+        <h2 className={styles.sectionTitle}>
+          Destaques e <span className="gold-text">Promoções</span>
+        </h2>
+        
+        <div className={styles.grid}>
+          {promoProducts.length > 0 ? (
+            promoProducts.map((prod) => (
+              <ProductCard key={prod.id} product={prod} />
+            ))
+          ) : (
+            <p style={{ color: 'var(--text-secondary)', gridColumn: '1 / -1', textAlign: 'center' }}>
+              Nenhuma promoção no momento. Fique de olho!
+            </p>
+          )}
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section id="todos-produtos" className={styles.promotions} style={{ paddingTop: '2rem' }}>
+        <h2 className={styles.sectionTitle}>
+          Todos os <span className="gold-text">Produtos</span>
+        </h2>
+        
+        <div className={styles.grid}>
+          {allProducts.length > 0 ? (
+            allProducts.map((prod) => (
+              <ProductCard key={prod.id} product={prod} />
+            ))
+          ) : (
+            <p style={{ color: 'var(--text-secondary)', gridColumn: '1 / -1', textAlign: 'center' }}>
+              Nenhum produto cadastrado no momento.
+            </p>
+          )}
+        </div>
+        
+        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+          <Link href="/catalogo" className="btn-primary">
+            Ver Catálogo Completo
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }
