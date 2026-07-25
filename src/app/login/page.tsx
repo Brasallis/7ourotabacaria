@@ -48,16 +48,11 @@ export default function LoginPage() {
             alt="7 Ouro Logo" 
             width={80} 
             height={80} 
-            style={{ 
-              borderRadius: '50%', 
-              border: '2px solid var(--gold-primary)',
-              filter: 'contrast(1.6) saturate(1.4) brightness(0.9)',
-              mixBlendMode: 'screen'
-            }}
+            style={{ borderRadius: '50%', border: '2px solid var(--gold-primary)' }}
           />
         </div>
         
-        <h1 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Acesso Restrito</h1>
+        <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>Acesso Restrito</h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Área Administrativa - <span className="gold-text">7 OURO</span></p>
 
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

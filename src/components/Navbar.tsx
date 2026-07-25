@@ -19,15 +19,9 @@ export default function Navbar() {
             alt="7 Ouro Logo" 
             width={50} 
             height={50} 
-            style={{ 
-              borderRadius: '50%', 
-              objectFit: 'cover', 
-              border: '1px solid var(--gold-primary)',
-              filter: 'contrast(1.6) saturate(1.4) brightness(0.9)',
-              mixBlendMode: 'screen'
-            }}
+            style={{ borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--gold-primary)' }}
           />
-          <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}><span className="gold-text">7 Ouro</span> TABACARIA</span>
+          <span><span className="gold-text">7 OURO</span> TABACARIA</span>
         </Link>
       </div>
       <nav className={styles.nav}>
