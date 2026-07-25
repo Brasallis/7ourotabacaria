@@ -54,9 +54,9 @@ export default function CartPage() {
     setValidatingCoupon(false);
   };
 
-  const handleWhatsAppOrder = () => {
-    const phoneNumber = "5511937748884";
-    let message = `*NOVO PEDIDO - 7 OURO TABACARIA*\n\n`;
+  const handleCheckout = () => {
+    const phoneNumber = "5511940565052"; // Novo número do cliente
+    let message = `*NOVO PEDIDO - 7 OURO TABACARIA* 🚬\n\n`;
 
     message += `*Cliente:* ${customerInfo.name}\n`;
     message += `*Tipo:* ${customerInfo.deliveryType === 'entrega' ? 'Entrega' : 'Retirada na Loja'}\n`;
