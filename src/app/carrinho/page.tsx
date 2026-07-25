@@ -54,7 +54,7 @@ export default function CartPage() {
     setValidatingCoupon(false);
   };
 
-  const handleCheckout = () => {
+  const handleWhatsAppOrder = () => {
     const phoneNumber = "5511940565052"; // Novo número do cliente
     let message = `*NOVO PEDIDO - 7 OURO TABACARIA* 🚬\n\n`;
 
