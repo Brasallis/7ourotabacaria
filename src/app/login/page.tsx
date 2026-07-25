@@ -44,8 +44,8 @@ export default function LoginPage() {
         
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
           <Image 
-            src="/logo.jpg" 
-            alt="Logo 7 Ouro" 
+            src="/Logo.png" 
+            alt="7 Ouro Logo" 
             width={80} 
             height={80} 
             style={{ borderRadius: '50%', border: '2px solid var(--gold-primary)' }}

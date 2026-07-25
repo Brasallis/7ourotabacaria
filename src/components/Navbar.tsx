@@ -15,8 +15,8 @@ export default function Navbar() {
       <div className={styles.logo}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Image 
-            src="/logo.jpg" 
-            alt="Logo 7 Ouro" 
+            src="/Logo.png" 
+            alt="7 Ouro Logo" 
             width={50} 
             height={50} 
             style={{ borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--gold-primary)' }}
