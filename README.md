@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 7 Ouro Tabacaria Premium 🚬🏆
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-First, run the development server:
+Uma plataforma de E-commerce moderna e premium, desenvolvida exclusivamente para a **7 Ouro Tabacaria**. O sistema oferece uma experiência de compra sofisticada para os clientes, com um poderoso painel administrativo para controle total da loja.
 
+---
+
+## 🌟 Funcionalidades Principais
+
+### Para o Cliente (Vitrine)
+- **Design Premium:** Interface moderna com tema escuro (Dark Mode) e detalhes em dourado (Gold Accents).
+- **Catálogo Inteligente:** Filtros por categorias (Sedas, Tabacos, Piteiras, Acessórios).
+- **Carrinho Dinâmico:** Carrinho flutuante com cálculo automático de subtotal e descontos.
+- **Cupons Promocionais:** Suporte a códigos de desconto (Ex: `BEMVINDO10`).
+- **Integração com WhatsApp:** Finalização do pedido direcionada automaticamente para o WhatsApp da loja, já com o resumo dos itens, descontos e valores.
+- **Verificação de Idade:** Modal obrigatório de "Maior de 18 Anos" (Age Verification) com suporte a cookies.
+
+### Para o Administrador (Dashboard)
+- **Autenticação Segura:** Painel blindado via Middleware e Next.js Edge Functions.
+- **Gestão de Produtos:** 
+  - Adição/Edição com upload de imagens nativo.
+  - Controle de preços regulares e preços promocionais.
+  - Visibilidade (ocultar ou destacar produtos na página inicial).
+- **Gestão de Categorias e Cupons:** Criação de novos setores e campanhas de desconto de forma intuitiva.
+- **Responsividade Total:** O administrador pode gerenciar a loja inteira diretamente pelo celular.
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+Este projeto foi construído utilizando as melhores e mais recentes tecnologias do ecossistema Web:
+
+- **[Next.js 14](https://nextjs.org/) (App Router):** Framework React para renderização Server-Side (SSR) e Edge.
+- **[TypeScript](https://www.typescriptlang.org/):** Tipagem estática para um código seguro e escalável.
+- **[Prisma ORM](https://www.prisma.io/):** Gerenciamento e tipagem do Banco de Dados.
+- **[CSS Modules / Vanilla CSS]:** Estilização customizada, leve e sem dependências excessivas de frameworks.
+- **Upload Local/Nuvem:** Gestão nativa de imagens com o componente `<Image />` otimizado do Next.js.
+
+---
+
+## 🛠️ Como Executar o Projeto Localmente
+
+### Pré-requisitos
+- Node.js (v18 ou superior)
+- NPM, Yarn ou PNPM.
+
+### Passo a Passo
+
+1. **Clone o repositório:**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Brasallis/7ourotabacaria.git
+cd 7ourotabacaria
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Instale as dependências:**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Configure as Variáveis de Ambiente:**
+Crie um arquivo `.env` na raiz do projeto e configure o seu banco de dados:
+```env
+# Exemplo para SQLite (Local)
+DATABASE_URL="file:./dev.db"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Exemplo para PostgreSQL (Nuvem / Supabase)
+# DATABASE_URL="postgresql://usuario:senha@aws-0-sa-east-1.pooler.supabase.com:6543/postgres"
+```
 
-## Learn More
+4. **Prepare o Banco de Dados:**
+```bash
+npx prisma generate
+npx prisma db push
+```
+*(Opcional: Execute `node seed.js` para popular a loja com dados de demonstração).*
 
-To learn more about Next.js, take a look at the following resources:
+5. **Inicie o Servidor de Desenvolvimento:**
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+6. Acesse a aplicação em: `http://localhost:3000`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🔒 Segurança e Acessos
+A área administrativa da loja pode ser acessada através da rota `/admin`. O acesso é protegido por senha e gerido através de cookies seguros (HttpOnly).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Desenvolvido com muito café e código de ponta para a **7 Ouro Tabacaria**. 
