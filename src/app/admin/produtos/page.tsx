@@ -18,6 +18,7 @@ type Product = {
   imageUrl2: string | null;
   imageUrl3: string | null;
   isPromotion: boolean;
+  isVisible: boolean;
   category: Category;
   categoryId: string;
 };
