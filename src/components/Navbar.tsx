@@ -27,7 +27,7 @@ export default function Navbar() {
               mixBlendMode: 'screen'
             }}
           />
-          <span className="gold-text" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>7 Ouro</span> TABACARIA</span>
+          <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}><span className="gold-text">7 Ouro</span> TABACARIA</span>
         </Link>
       </div>
       <nav className={styles.nav}>
