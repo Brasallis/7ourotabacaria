@@ -48,7 +48,12 @@ export default function LoginPage() {
             alt="7 Ouro Logo" 
             width={80} 
             height={80} 
-            style={{ borderRadius: '50%', border: '2px solid var(--gold-primary)' }}
+            style={{ 
+              borderRadius: '50%', 
+              border: '2px solid var(--gold-primary)',
+              filter: 'contrast(1.6) saturate(1.4) brightness(0.9)',
+              mixBlendMode: 'screen'
+            }}
           />
         </div>
         
