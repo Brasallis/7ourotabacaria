@@ -18,6 +18,8 @@ import Navbar from "@/components/Navbar";
 import AgeVerification from "@/components/AgeVerification";
 import CookieConsent from "@/components/CookieConsent";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +34,7 @@ export default function RootLayout({
           {children}
           <CookieConsent />
         </CartProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
