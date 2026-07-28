@@ -272,7 +272,22 @@ export default function ProdutosPage() {
 
         <div className={styles.grid3}>
           <div className={styles.formGroup}>
-            <label>Foto Principal {existingImageUrl1 && "(Nova substitui atual)"}</label>
+            <label>Foto Principal</label>
+            {(existingImageUrl1 || file1) && (
+              <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '10px' }}>
+                <img 
+                  src={file1 ? URL.createObjectURL(file1) : existingImageUrl1} 
+                  alt="Preview" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} 
+                />
+                <button 
+                  type="button"
+                  onClick={() => { setExistingImageUrl1(""); setFile1(null); }}
+                  style={{ position: 'absolute', top: '-5px', right: '-5px', background: '#d93025', color: 'white', borderRadius: '50%', width: '20px', height: '20px', border: 'none', cursor: 'pointer', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  title="Remover foto"
+                >✕</button>
+              </div>
+            )}
             <input 
               type="file" 
               accept="image/*"
@@ -280,7 +295,22 @@ export default function ProdutosPage() {
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Foto Secundária (2) {existingImageUrl2 && "(Nova substitui atual)"}</label>
+            <label>Foto Secundária (2)</label>
+            {(existingImageUrl2 || file2) && (
+              <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '10px' }}>
+                <img 
+                  src={file2 ? URL.createObjectURL(file2) : existingImageUrl2} 
+                  alt="Preview" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} 
+                />
+                <button 
+                  type="button"
+                  onClick={() => { setExistingImageUrl2(""); setFile2(null); }}
+                  style={{ position: 'absolute', top: '-5px', right: '-5px', background: '#d93025', color: 'white', borderRadius: '50%', width: '20px', height: '20px', border: 'none', cursor: 'pointer', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  title="Remover foto"
+                >✕</button>
+              </div>
+            )}
             <input 
               type="file" 
               accept="image/*"
@@ -288,7 +318,22 @@ export default function ProdutosPage() {
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Foto Secundária (3) {existingImageUrl3 && "(Nova substitui atual)"}</label>
+            <label>Foto Secundária (3)</label>
+            {(existingImageUrl3 || file3) && (
+              <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '10px' }}>
+                <img 
+                  src={file3 ? URL.createObjectURL(file3) : existingImageUrl3} 
+                  alt="Preview" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} 
+                />
+                <button 
+                  type="button"
+                  onClick={() => { setExistingImageUrl3(""); setFile3(null); }}
+                  style={{ position: 'absolute', top: '-5px', right: '-5px', background: '#d93025', color: 'white', borderRadius: '50%', width: '20px', height: '20px', border: 'none', cursor: 'pointer', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  title="Remover foto"
+                >✕</button>
+              </div>
+            )}
             <input 
               type="file" 
               accept="image/*"
