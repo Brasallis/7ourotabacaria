@@ -109,8 +109,13 @@ export default function CartPage() {
           <div className={styles.content}>
             <div className={styles.itemsList}>
               {items.map((item) => (
-                <div key={item.id} className={`glass-panel ${styles.cartItem}`}>
-                  <div className={styles.itemInfo}>
+                <div key={item.id} className={`glass-panel ${styles.cartItem}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt={item.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} />
+                  ) : (
+                    <div style={{ width: '60px', height: '60px', background: 'var(--glass-bg)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: '0.7rem' }}>Sem foto</div>
+                  )}
+                  <div className={styles.itemInfo} style={{ flexGrow: 1 }}>
                     <h3>{item.name}</h3>
                     <p className="gold-text">{formatCurrency(item.price)}</p>
                   </div>
