@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { existsSync } from "fs";
+import { createClient } from "@supabase/supabase-js";
+
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function POST(request: Request) {
   try {
@@ -15,23 +18,28 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Diretório public/uploads
-    const uploadDir = path.join(process.cwd(), "public/uploads");
-    
-    // Criar diretório se não existir
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
+    const uniqueName = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
+
+    // Upload to Supabase Storage
+    const { data, error } = await supabase.storage
+      .from('produtos')
+      .upload(uniqueName, buffer, {
+        contentType: file.type || 'image/jpeg',
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) {
+      console.error("Supabase Storage Error:", error);
+      return NextResponse.json({ error: "Failed to upload to storage" }, { status: 500 });
     }
 
-    // Nome único para evitar conflitos
-    const uniqueName = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
-    const filePath = path.join(uploadDir, uniqueName);
-
-    // Salvar o arquivo
-    await writeFile(filePath, buffer);
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('produtos')
+      .getPublicUrl(uniqueName);
     
-    // Retornar a URL relativa
-    return NextResponse.json({ url: `/uploads/${uniqueName}` });
+    return NextResponse.json({ url: publicUrl });
   } catch (error) {
     console.error("Upload Error:", error);
     return NextResponse.json({ error: "Failed to upload file" }, { status: 500 });
