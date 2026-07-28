@@ -274,18 +274,18 @@ export default function ProdutosPage() {
           <div className={styles.formGroup}>
             <label>Foto Principal</label>
             {(existingImageUrl1 || file1) && (
-              <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', padding: '1rem', background: 'var(--glass-bg)', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
                 <img 
                   src={file1 ? URL.createObjectURL(file1) : existingImageUrl1} 
                   alt="Preview" 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} 
+                  style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '4px', background: '#000' }} 
                 />
                 <button 
                   type="button"
                   onClick={() => { setExistingImageUrl1(""); setFile1(null); }}
-                  style={{ position: 'absolute', top: '-5px', right: '-5px', background: '#d93025', color: 'white', borderRadius: '50%', width: '20px', height: '20px', border: 'none', cursor: 'pointer', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  title="Remover foto"
-                >✕</button>
+                  className="btn-secondary"
+                  style={{ width: '100%', padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
+                >🗑️ Remover Foto Principal</button>
               </div>
             )}
             <input 
@@ -297,18 +297,18 @@ export default function ProdutosPage() {
           <div className={styles.formGroup}>
             <label>Foto Secundária (2)</label>
             {(existingImageUrl2 || file2) && (
-              <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', padding: '1rem', background: 'var(--glass-bg)', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
                 <img 
                   src={file2 ? URL.createObjectURL(file2) : existingImageUrl2} 
                   alt="Preview" 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} 
+                  style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '4px', background: '#000' }} 
                 />
                 <button 
                   type="button"
                   onClick={() => { setExistingImageUrl2(""); setFile2(null); }}
-                  style={{ position: 'absolute', top: '-5px', right: '-5px', background: '#d93025', color: 'white', borderRadius: '50%', width: '20px', height: '20px', border: 'none', cursor: 'pointer', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  title="Remover foto"
-                >✕</button>
+                  className="btn-secondary"
+                  style={{ width: '100%', padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
+                >🗑️ Remover Foto 2</button>
               </div>
             )}
             <input 
@@ -320,18 +320,18 @@ export default function ProdutosPage() {
           <div className={styles.formGroup}>
             <label>Foto Secundária (3)</label>
             {(existingImageUrl3 || file3) && (
-              <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', padding: '1rem', background: 'var(--glass-bg)', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
                 <img 
                   src={file3 ? URL.createObjectURL(file3) : existingImageUrl3} 
                   alt="Preview" 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} 
+                  style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '4px', background: '#000' }} 
                 />
                 <button 
                   type="button"
                   onClick={() => { setExistingImageUrl3(""); setFile3(null); }}
-                  style={{ position: 'absolute', top: '-5px', right: '-5px', background: '#d93025', color: 'white', borderRadius: '50%', width: '20px', height: '20px', border: 'none', cursor: 'pointer', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  title="Remover foto"
-                >✕</button>
+                  className="btn-secondary"
+                  style={{ width: '100%', padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
+                >🗑️ Remover Foto 3</button>
               </div>
             )}
             <input 
@@ -359,6 +359,7 @@ export default function ProdutosPage() {
           <table className={styles.adminTable}>
             <thead>
               <tr>
+                <th>Foto</th>
                 <th>Nome</th>
                 <th>Categoria</th>
                 <th>Preço</th>
@@ -369,6 +370,13 @@ export default function ProdutosPage() {
             <tbody>
               {products.map((prod) => (
                 <tr key={prod.id} style={{ opacity: prod.isVisible === false ? 0.6 : 1 }}>
+                  <td>
+                    {prod.imageUrl ? (
+                      <img src={prod.imageUrl} alt={prod.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--glass-border)' }} />
+                    ) : (
+                      <div style={{ width: '40px', height: '40px', background: 'var(--glass-bg)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>Sem foto</div>
+                    )}
+                  </td>
                   <td>
                     {prod.name} 
                     {prod.isVisible === false && <span style={{ marginLeft: '8px', fontSize: '0.75rem', padding: '2px 6px', background: '#333', borderRadius: '4px' }}>Oculto</span>}
