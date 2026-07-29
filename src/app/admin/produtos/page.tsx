@@ -123,8 +123,8 @@ export default function ProdutosPage() {
     setFormData({
       name: prod.name,
       description: prod.description,
-      price: prod.price.toString(),
-      promotionalPrice: prod.promotionalPrice ? prod.promotionalPrice.toString() : "",
+      price: prod.price ? new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(prod.price) : "",
+      promotionalPrice: prod.promotionalPrice ? new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(prod.promotionalPrice) : "",
       categoryId: prod.categoryId,
       isPromotion: prod.isPromotion || false,
       isVisible: prod.isVisible !== undefined ? prod.isVisible : true,
@@ -162,6 +162,16 @@ export default function ProdutosPage() {
   const formatCurrency = (val: number) =>
     new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(val);
 
+  const formatCurrencyInput = (value: string) => {
+    let numericValue = value.replace(/\D/g, "");
+    if (!numericValue) return "";
+    const floatValue = parseFloat(numericValue) / 100;
+    return new Intl.NumberFormat("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(floatValue);
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -192,10 +202,10 @@ export default function ProdutosPage() {
           <div className={styles.formGroup}>
             <label>Preço Original (R$)</label>
             <input 
-              type="number" 
-              step="0.01"
+              type="text" 
               value={formData.price}
-              onChange={(e) => setFormData({...formData, price: e.target.value})}
+              onChange={(e) => setFormData({...formData, price: formatCurrencyInput(e.target.value)})}
+              placeholder="0,00"
               required 
             />
           </div>
@@ -203,16 +213,24 @@ export default function ProdutosPage() {
           <div className={styles.formGroup}>
             <label style={{ color: 'var(--gold-light)' }}>Preço Promocional (Opcional)</label>
             <input 
-              type="number" 
-              step="0.01"
+              type="text" 
               value={formData.promotionalPrice}
-              onChange={(e) => setFormData({...formData, promotionalPrice: e.target.value})}
+              onChange={(e) => setFormData({...formData, promotionalPrice: formatCurrencyInput(e.target.value)})}
               placeholder="Ex: Se tiver desconto"
             />
-            {formData.price && formData.promotionalPrice && parseFloat(formData.price) > parseFloat(formData.promotionalPrice) && (
-              <span style={{ color: 'var(--gold-primary)', fontSize: '0.8rem', marginTop: '4px', display: 'block', fontWeight: 'bold' }}>
-                Desconto de {Math.round(((parseFloat(formData.price) - parseFloat(formData.promotionalPrice)) / parseFloat(formData.price)) * 100)}%
-              </span>
+            {formData.price && formData.promotionalPrice && (
+              (() => {
+                const p = parseFloat(formData.price.replace(/\./g, '').replace(',', '.'));
+                const pPromo = parseFloat(formData.promotionalPrice.replace(/\./g, '').replace(',', '.'));
+                if (p > pPromo && pPromo > 0) {
+                  return (
+                    <span style={{ color: 'var(--gold-primary)', fontSize: '0.8rem', marginTop: '4px', display: 'block', fontWeight: 'bold' }}>
+                      Desconto de {Math.round(((p - pPromo) / p) * 100)}%
+                    </span>
+                  );
+                }
+                return null;
+              })()
             )}
           </div>
         </div>

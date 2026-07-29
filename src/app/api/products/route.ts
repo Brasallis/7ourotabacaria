@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+const parsePrice = (val: any) => {
+  if (val === null || val === undefined || val === '') return null;
+  if (typeof val === 'number') return val;
+  const cleaned = String(val).replace(/\./g, '').replace(',', '.');
+  return parseFloat(cleaned);
+};
+
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -25,8 +32,8 @@ export async function POST(request: Request) {
       data: {
         name: body.name,
         description: body.description,
-        price: parseFloat(body.price),
-        promotionalPrice: body.promotionalPrice ? parseFloat(body.promotionalPrice) : null,
+        price: parsePrice(body.price) || 0,
+        promotionalPrice: parsePrice(body.promotionalPrice),
         imageUrl: body.imageUrl || null,
         imageUrl2: body.imageUrl2 || null,
         imageUrl3: body.imageUrl3 || null,

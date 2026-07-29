@@ -25,6 +25,7 @@ export default function CatalogPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchData = async () => {
       try {
         const [productsRes, categoriesRes] = await Promise.all([
