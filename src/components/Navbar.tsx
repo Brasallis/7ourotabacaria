@@ -114,7 +114,7 @@ export default function Navbar() {
             left: 0,
             right: 0,
             marginTop: '10px',
-            background: 'var(--bg-card)',
+            background: '#111111',
             border: '1px solid var(--glass-border)',
             borderRadius: '8px',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
