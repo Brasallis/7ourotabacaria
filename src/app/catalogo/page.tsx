@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import styles from "./page.module.css";
 
@@ -18,7 +19,10 @@ type Category = {
   name: string;
 };
 
-export default function CatalogPage() {
+function CatalogContent() {
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q") || "";
+  
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -27,9 +31,10 @@ export default function CatalogPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [productsRes, categoriesRes] = await Promise.all([
-          fetch("/api/products"),
+          fetch(`/api/products${q ? `?q=${encodeURIComponent(q)}` : ''}`),
           fetch("/api/categories")
         ]);
         
@@ -47,7 +52,7 @@ export default function CatalogPage() {
     };
 
     fetchData();
-  }, []);
+  }, [q]);
 
   const filteredProducts = selectedCategory === "all" 
     ? products 
@@ -57,7 +62,11 @@ export default function CatalogPage() {
     <main className={styles.main}>
       <div className={styles.container}>
         <h1 className={styles.title}>
-          Nosso <span className="gold-text">Catálogo</span>
+          {q ? (
+            <>Resultados para <span className="gold-text">"{q}"</span></>
+          ) : (
+            <>Nosso <span className="gold-text">Catálogo</span></>
+          )}
         </h1>
 
         <div className={styles.filters}>
@@ -91,5 +100,13 @@ export default function CatalogPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function CatalogPage() {
+  return (
+    <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px', color: 'var(--gold-primary)' }}>Carregando catálogo...</div>}>
+      <CatalogContent />
+    </Suspense>
   );
 }

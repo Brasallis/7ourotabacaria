@@ -21,6 +21,13 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
+.searchContainer {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 20px;
+  position: relative;
+}
+
 .logo {
   font-size: 1.5rem;
   font-weight: 800;
@@ -215,5 +222,24 @@
     right: -5px;
     width: 26px;
     height: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap;
+    padding: 1rem 5%;
+  }
+  .logo {
+    order: 1;
+    font-size: 1.2rem;
+  }
+  .nav {
+    order: 2;
+  }
+  .searchContainer {
+    order: 3;
+    min-width: 100%;
+    margin: 10px 0 0 0 !important;
   }
 }
