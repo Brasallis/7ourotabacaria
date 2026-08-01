@@ -3,11 +3,13 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 
-// Adicionar flag de revalidação para que a home atualize sempre (ou usar cache com tempo)
+// Adicionar flag de revalidação e forçar dinâmico para evitar cache preso na Vercel
 export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   // Busca até 6 produtos que sejam destaques (isPromotion) ou que tenham desconto
+  // Busca produtos que sejam destaques (isPromotion) ou que tenham desconto
   const promoProducts = await prisma.product.findMany({
     where: { 
       isVisible: true,
@@ -15,19 +17,34 @@ export default async function Home() {
         { isPromotion: true },
         { promotionalPrice: { not: null } }
       ]
-    },
-    take: 6,
-    orderBy: { createdAt: "desc" },
+    }
   });
+  promoProducts.sort((a, b) => {
+    const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+  });
+  
+  // Pega os 6 primeiros da lista já ordenada alfabeticamente
+  const topPromoProducts = promoProducts.slice(0, 6);
 
   // Busca todos os outros produtos para a vitrine principal
   const allProducts = await prisma.product.findMany({
     where: { isVisible: true },
-    orderBy: { createdAt: "desc" },
+  });
+  allProducts.sort((a, b) => {
+    const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
   });
 
   // Busca as categorias para exibir no menu inicial
   const categories = await prisma.category.findMany();
+  categories.sort((a, b) => {
+    const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+  });
 
   return (
     <main className={styles.main}>
@@ -62,8 +79,8 @@ export default async function Home() {
         </h2>
         
         <div className={styles.grid}>
-          {promoProducts.length > 0 ? (
-            promoProducts.map((prod) => (
+          {topPromoProducts.length > 0 ? (
+            topPromoProducts.map((prod) => (
               <ProductCard key={prod.id} product={prod} />
             ))
           ) : (

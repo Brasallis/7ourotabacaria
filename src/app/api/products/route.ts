@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const parsePrice = (val: any) => {
   if (val === null || val === undefined || val === '') return null;
   if (typeof val === 'number') return val;
@@ -38,8 +40,12 @@ export async function GET(request: Request) {
       );
     }
     
-    // Sort alphabetically ignoring case and accents
-    products.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
+    // Sort alphabetically ignoring case and accents robustly
+    products.sort((a, b) => {
+      const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    });
     
     return NextResponse.json(products);
   } catch (error) {
