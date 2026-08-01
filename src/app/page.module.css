@@ -203,11 +203,14 @@
     padding: 1rem 5%;
   }
   .nav {
-    gap: 1rem;
+    gap: 0.5rem;
+  }
+  .navLink {
+    display: none;
   }
   .cartBtn {
-    width: 55px;
-    height: 55px;
+    width: 45px;
+    height: 45px;
     background: var(--gold-gradient);
     border: none;
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);

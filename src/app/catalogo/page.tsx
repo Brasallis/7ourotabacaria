@@ -72,15 +72,15 @@ function CatalogContent() {
 
         <div className={styles.filters}>
           <button 
-            className={`${styles.filterBtn} ${selectedCategory === "all" ? styles.active : ""}`}
+            className={selectedCategory === "all" ? "btn-primary" : "btn-secondary"}
             onClick={() => setSelectedCategory("all")}
           >
-            Todos
+            Todas
           </button>
           {categories.map(category => (
             <button 
               key={category.id}
-              className={`${styles.filterBtn} ${selectedCategory === category.id ? styles.active : ""}`}
+              className={selectedCategory === category.id ? "btn-primary" : "btn-secondary"}
               onClick={() => setSelectedCategory(category.id)}
             >
               {category.name}
