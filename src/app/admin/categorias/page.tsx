@@ -6,12 +6,14 @@ import styles from "../layout.module.css";
 type Category = {
   id: string;
   name: string;
+  products?: any[];
 };
 
 export default function CategoriasPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [name, setName] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [viewingCategory, setViewingCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchCategories = async () => {
@@ -106,6 +108,7 @@ export default function CategoriasPage() {
           <thead>
             <tr>
               <th>Nome</th>
+              <th>Qtd. Produtos</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -113,8 +116,16 @@ export default function CategoriasPage() {
             {categories.map((cat) => (
               <tr key={cat.id}>
                 <td>{cat.name}</td>
+                <td>{cat.products?.length || 0} produto(s)</td>
                 <td>
                   <div className={styles.actionButtons}>
+                    <button 
+                      onClick={() => setViewingCategory(cat)} 
+                      className={`${styles.actionBtn}`}
+                      style={{ background: 'var(--glass-bg)' }}
+                    >
+                      👀 Ver
+                    </button>
                     <button 
                       onClick={() => handleEdit(cat)} 
                       className={`${styles.actionBtn} ${styles.actionBtnEdit}`}
@@ -135,6 +146,40 @@ export default function CategoriasPage() {
         </table>
         </div>
       </div>
+
+      {viewingCategory && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0, 0, 0, 0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+        }}>
+          <div className="glass-panel" style={{ width: '90%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto', padding: '2rem', position: 'relative' }}>
+            <button 
+              onClick={() => setViewingCategory(null)}
+              style={{ position: 'absolute', top: '15px', right: '15px', background: 'transparent', border: 'none', color: '#fff', fontSize: '1.5rem', cursor: 'pointer' }}
+            >
+              ✕
+            </button>
+            <h2 style={{ marginBottom: '1.5rem' }}>
+              Produtos na Categoria: <span className="gold-text">{viewingCategory.name}</span>
+            </h2>
+            
+            {(!viewingCategory.products || viewingCategory.products.length === 0) ? (
+              <p style={{ color: 'var(--text-secondary)' }}>Nenhum produto cadastrado nesta categoria.</p>
+            ) : (
+              <ul style={{ listStyle: 'none', padding: 0 }}>
+                {viewingCategory.products.map(prod => (
+                  <li key={prod.id} style={{ padding: '10px 0', borderBottom: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>{prod.name}</span>
+                    <span className="gold-text">
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(prod.promotionalPrice || prod.price)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -159,7 +159,13 @@ export default function Navbar() {
       </div>
 
       <nav className={styles.nav}>
-        <Link href="/catalogo" className={styles.navLink}>Catálogo</Link>
+        <Link 
+          href="/catalogo" 
+          className={styles.navLink}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          Catálogo
+        </Link>
         <Link href="/carrinho" className={styles.cartBtn}>
           <ShoppingCart className={styles.cartIcon} />
           {cartCount > 0 && (

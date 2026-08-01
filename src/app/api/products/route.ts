@@ -23,20 +23,24 @@ export async function GET(request: Request) {
     const isAdmin = url.searchParams.get('admin') === 'true';
     const q = url.searchParams.get('q');
     
-    const whereClause: any = isAdmin ? {} : { isVisible: true };
-    if (q) {
-      whereClause.name = { contains: q }; // sqlite doesn't support mode: 'insensitive' natively in prisma unless configured, but we'll try contains. Note: SQLite contains is case-insensitive by default in Prisma.
-    }
-    
-    const products = await prisma.product.findMany({
-      where: whereClause,
+    let products = await prisma.product.findMany({
+      where: isAdmin ? {} : { isVisible: true },
       include: {
         category: true,
-      },
-      orderBy: {
-        name: 'asc'
       }
     });
+    
+    // Filter in JS to ensure perfect case and accent insensitivity
+    if (q) {
+      const search = q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      products = products.filter(p => 
+        p.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(search)
+      );
+    }
+    
+    // Sort alphabetically ignoring case and accents
+    products.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
+    
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });
