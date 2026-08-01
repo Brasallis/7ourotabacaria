@@ -19,6 +19,7 @@ import AgeVerification from "@/components/AgeVerification";
 import CookieConsent from "@/components/CookieConsent";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
   children,
@@ -35,6 +36,7 @@ export default function RootLayout({
           <CookieConsent />
         </CartProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
