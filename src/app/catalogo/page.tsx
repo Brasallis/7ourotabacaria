@@ -22,10 +22,11 @@ type Category = {
 function CatalogContent() {
   const searchParams = useSearchParams();
   const q = searchParams.get("q") || "";
+  const catParam = searchParams.get("cat");
   
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>(catParam || "all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -26,6 +26,9 @@ export default async function Home() {
     orderBy: { createdAt: "desc" },
   });
 
+  // Busca as categorias para exibir no menu inicial
+  const categories = await prisma.category.findMany();
+
   return (
     <main className={styles.main}>
       <section className={styles.hero}>
@@ -36,13 +39,19 @@ export default async function Home() {
           <p className={styles.subtitle}>
             Explore nossa seleção exclusiva de produtos com a melhor qualidade e entrega garantida.
           </p>
-          <div className={styles.actions}>
+          <div className={styles.actions} style={{ flexWrap: 'wrap' }}>
             <Link href="/catalogo" className="btn-primary">
-              Ver Catálogo
+              Todas
             </Link>
-            <Link href="#promocoes" className="btn-secondary">
-              Promoções
-            </Link>
+            {categories.map(cat => (
+              <Link 
+                key={cat.id} 
+                href={`/catalogo?cat=${cat.id}`} 
+                className="btn-secondary"
+              >
+                {cat.name}
+              </Link>
+            ))}
           </div>
         </div>
       </section>

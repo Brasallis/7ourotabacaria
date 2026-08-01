@@ -195,7 +195,9 @@
 
 @media (max-width: 600px) {
   .actions {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
   .header {
     padding: 1rem 5%;
