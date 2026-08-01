@@ -122,7 +122,7 @@ export default function CategoriasPage() {
                     <button 
                       onClick={() => setViewingCategory(cat)} 
                       className={`${styles.actionBtn}`}
-                      style={{ background: 'var(--glass-bg)' }}
+                      style={{ background: 'var(--glass-bg)', color: '#fff' }}
                     >
                       👀 Ver
                     </button>
