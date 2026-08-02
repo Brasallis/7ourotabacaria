@@ -85,9 +85,14 @@ button {
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
-  filter: brightness(1.1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+  filter: brightness(1.15);
+}
+
+.btn-primary:active {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
 }
 
 .btn-secondary {
@@ -102,6 +107,53 @@ button {
 }
 
 .btn-secondary:hover {
-  background: var(--glass-bg);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  transform: translateY(-3px);
+  border-color: var(--gold-light);
+  color: var(--gold-light);
+}
+
+.btn-secondary:active {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+}
+
+/* Efeito Oficial: Fagulhas de Brasa (Gold Embers) com Parallax */
+.embers-wrap {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ember {
+  position: absolute;
+  bottom: -20px;
+  width: 4px; height: 4px;
+  background: var(--gold-light);
+  border-radius: 50%;
+  box-shadow: 0 0 10px 3px rgba(212, 175, 55, 0.8), 0 0 20px 5px rgba(255, 223, 0, 0.5);
+  opacity: 0;
+  animation: ember-float infinite ease-in;
+}
+
+/* Espalhando 10 fagulhas pela tela com tempos diferentes (Velocidade reduzida) */
+.ember-1 { left: 10%; animation-duration: 25s; animation-delay: 0s; }
+.ember-2 { left: 25%; animation-duration: 30s; animation-delay: 2s; width: 3px; height: 3px; }
+.ember-3 { left: 40%; animation-duration: 28s; animation-delay: 1s; width: 5px; height: 5px; }
+.ember-4 { left: 55%; animation-duration: 35s; animation-delay: 3s; }
+.ember-5 { left: 70%; animation-duration: 22s; animation-delay: 4s; width: 2px; height: 2px; }
+.ember-6 { left: 85%; animation-duration: 32s; animation-delay: 1.5s; }
+.ember-7 { left: 15%; animation-duration: 38s; animation-delay: 5s; }
+.ember-8 { left: 35%; animation-duration: 26s; animation-delay: 0.5s; width: 6px; height: 6px; }
+.ember-9 { left: 65%; animation-duration: 29s; animation-delay: 2.5s; }
+.ember-10 { left: 80%; animation-duration: 34s; animation-delay: 3.5s; }
+
+@keyframes ember-float {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  50% { transform: translateY(-600px) translateX(40px); opacity: 0.8; }
+  100% { transform: translateY(-1400px) translateX(-60px); opacity: 0; }
 }

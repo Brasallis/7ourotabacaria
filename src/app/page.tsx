@@ -20,9 +20,7 @@ export default async function Home() {
     }
   });
   promoProducts.sort((a, b) => {
-    const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    return a.name.trim().replace(/\s+/g, ' ').localeCompare(b.name.trim().replace(/\s+/g, ' '), 'pt-BR', { sensitivity: 'base' });
   });
   
   // Pega os 6 primeiros da lista já ordenada alfabeticamente
@@ -33,22 +31,25 @@ export default async function Home() {
     where: { isVisible: true },
   });
   allProducts.sort((a, b) => {
-    const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    return a.name.trim().replace(/\s+/g, ' ').localeCompare(b.name.trim().replace(/\s+/g, ' '), 'pt-BR', { sensitivity: 'base' });
   });
 
   // Busca as categorias para exibir no menu inicial
   const categories = await prisma.category.findMany();
   categories.sort((a, b) => {
-    const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    return a.name.trim().replace(/\s+/g, ' ').localeCompare(b.name.trim().replace(/\s+/g, ' '), 'pt-BR', { sensitivity: 'base' });
   });
 
   return (
     <main className={styles.main}>
-      <section className={styles.hero}>
+      {/* Efeito Parallax: Fagulhas presas no fundo da tela */}
+      <div className="embers-wrap">
+        {[...Array(10)].map((_, i) => (
+          <div key={i} className={`ember ember-${i + 1}`}></div>
+        ))}
+      </div>
+
+      <section className={styles.hero} style={{ position: 'relative', zIndex: 1 }}>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>
             A Experiência <span className="gold-text">Premium</span> em Tabacaria
@@ -73,7 +74,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="promocoes" className={styles.promotions}>
+      <section id="promocoes" className={styles.promotions} style={{ position: 'relative', zIndex: 1 }}>
         <h2 className={styles.sectionTitle}>
           Destaques e <span className="gold-text">Promoções</span>
         </h2>
@@ -91,7 +92,8 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="todos-produtos" className={styles.promotions} style={{ paddingTop: '2rem' }}>
+      {/* Camada sólida que passa por cima das fagulhas */}
+      <section id="todos-produtos" className={styles.promotions} style={{ paddingTop: '2rem', backgroundColor: 'var(--bg-primary)', position: 'relative', zIndex: 10, paddingBottom: '3rem' }}>
         <h2 className={styles.sectionTitle}>
           Todos os <span className="gold-text">Produtos</span>
         </h2>

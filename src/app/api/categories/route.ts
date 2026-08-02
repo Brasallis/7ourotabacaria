@@ -13,17 +13,13 @@ export async function GET() {
     
     // Garantir ordem alfabética precisa e imune a maiúsculas/acentos para as Categorias e Produtos
     categories.sort((a, b) => {
-      const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+      return a.name.trim().replace(/\s+/g, ' ').localeCompare(b.name.trim().replace(/\s+/g, ' '), 'pt-BR', { sensitivity: 'base' });
     });
 
     categories.forEach(cat => {
       if (cat.products) {
         cat.products.sort((a, b) => {
-          const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-          const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-          return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+          return a.name.trim().replace(/\s+/g, ' ').localeCompare(b.name.trim().replace(/\s+/g, ' '), 'pt-BR', { sensitivity: 'base' });
         });
       }
     });

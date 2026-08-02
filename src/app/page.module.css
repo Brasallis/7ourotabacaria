@@ -100,18 +100,7 @@
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
-  height: 100vw;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 70%);
-  z-index: -1;
-  pointer-events: none;
-}
+/* Removed hero::before blur */
 
 .heroContent {
   max-width: 800px;

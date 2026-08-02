@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import styles from "../layout.module.css";
+import ImageCropper from "@/components/ImageCropper";
 
 type Category = {
   id: string;
@@ -47,6 +48,31 @@ export default function ProdutosPage() {
   const [existingImageUrl1, setExistingImageUrl1] = useState("");
   const [existingImageUrl2, setExistingImageUrl2] = useState("");
   const [existingImageUrl3, setExistingImageUrl3] = useState("");
+
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [currentCropTarget, setCurrentCropTarget] = useState<1 | 2 | 3 | null>(null);
+
+  const onFileSelected = (e: React.ChangeEvent<HTMLInputElement>, target: 1 | 2 | 3) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setCropImageSrc(reader.result?.toString() || null);
+        setCurrentCropTarget(target);
+      });
+      reader.readAsDataURL(file);
+      e.target.value = "";
+    }
+  };
+
+  const handleCropComplete = (croppedFile: File) => {
+    if (currentCropTarget === 1) setFile1(croppedFile);
+    if (currentCropTarget === 2) setFile2(croppedFile);
+    if (currentCropTarget === 3) setFile3(croppedFile);
+    
+    setCropImageSrc(null);
+    setCurrentCropTarget(null);
+  };
 
   const fetchData = async () => {
     const [prodRes, catRes] = await Promise.all([
@@ -174,6 +200,17 @@ export default function ProdutosPage() {
 
   return (
     <div>
+      {cropImageSrc && (
+        <ImageCropper 
+          imageSrc={cropImageSrc}
+          onCropComplete={handleCropComplete}
+          onCancel={() => {
+            setCropImageSrc(null);
+            setCurrentCropTarget(null);
+          }}
+        />
+      )}
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.5rem', margin: 0 }}>
           Gerenciar <span className="gold-text">Produtos</span>
@@ -298,18 +335,29 @@ export default function ProdutosPage() {
                   alt="Preview" 
                   style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '4px', background: '#000' }} 
                 />
-                <button 
-                  type="button"
-                  onClick={() => { setExistingImageUrl1(""); setFile1(null); }}
-                  className="btn-secondary"
-                  style={{ width: '100%', padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
-                >🗑️ Remover Foto Principal</button>
+                <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setCropImageSrc(file1 ? URL.createObjectURL(file1) : existingImageUrl1);
+                      setCurrentCropTarget(1);
+                    }}
+                    className="btn-secondary"
+                    style={{ flex: 1, padding: '0.5rem', background: '#3b82f6', color: '#fff', border: 'none' }}
+                  >✂️ Recortar</button>
+                  <button 
+                    type="button"
+                    onClick={() => { setExistingImageUrl1(""); setFile1(null); }}
+                    className="btn-secondary"
+                    style={{ flex: 1, padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
+                  >🗑️ Remover</button>
+                </div>
               </div>
             )}
             <input 
               type="file" 
               accept="image/*"
-              onChange={(e) => setFile1(e.target.files?.[0] || null)}
+              onChange={(e) => onFileSelected(e, 1)}
             />
           </div>
           <div className={styles.formGroup}>
@@ -321,18 +369,29 @@ export default function ProdutosPage() {
                   alt="Preview" 
                   style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '4px', background: '#000' }} 
                 />
-                <button 
-                  type="button"
-                  onClick={() => { setExistingImageUrl2(""); setFile2(null); }}
-                  className="btn-secondary"
-                  style={{ width: '100%', padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
-                >🗑️ Remover Foto 2</button>
+                <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setCropImageSrc(file2 ? URL.createObjectURL(file2) : existingImageUrl2);
+                      setCurrentCropTarget(2);
+                    }}
+                    className="btn-secondary"
+                    style={{ flex: 1, padding: '0.5rem', background: '#3b82f6', color: '#fff', border: 'none' }}
+                  >✂️ Recortar</button>
+                  <button 
+                    type="button"
+                    onClick={() => { setExistingImageUrl2(""); setFile2(null); }}
+                    className="btn-secondary"
+                    style={{ flex: 1, padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
+                  >🗑️ Remover</button>
+                </div>
               </div>
             )}
             <input 
               type="file" 
               accept="image/*"
-              onChange={(e) => setFile2(e.target.files?.[0] || null)}
+              onChange={(e) => onFileSelected(e, 2)}
             />
           </div>
           <div className={styles.formGroup}>
@@ -344,18 +403,29 @@ export default function ProdutosPage() {
                   alt="Preview" 
                   style={{ width: '100%', height: '200px', objectFit: 'contain', borderRadius: '4px', background: '#000' }} 
                 />
-                <button 
-                  type="button"
-                  onClick={() => { setExistingImageUrl3(""); setFile3(null); }}
-                  className="btn-secondary"
-                  style={{ width: '100%', padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
-                >🗑️ Remover Foto 3</button>
+                <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setCropImageSrc(file3 ? URL.createObjectURL(file3) : existingImageUrl3);
+                      setCurrentCropTarget(3);
+                    }}
+                    className="btn-secondary"
+                    style={{ flex: 1, padding: '0.5rem', background: '#3b82f6', color: '#fff', border: 'none' }}
+                  >✂️ Recortar</button>
+                  <button 
+                    type="button"
+                    onClick={() => { setExistingImageUrl3(""); setFile3(null); }}
+                    className="btn-secondary"
+                    style={{ flex: 1, padding: '0.5rem', background: '#d93025', color: '#fff', border: 'none' }}
+                  >🗑️ Remover</button>
+                </div>
               </div>
             )}
             <input 
               type="file" 
               accept="image/*"
-              onChange={(e) => setFile3(e.target.files?.[0] || null)}
+              onChange={(e) => onFileSelected(e, 3)}
             />
           </div>
         </div>

@@ -42,9 +42,7 @@ export async function GET(request: Request) {
     
     // Sort alphabetically ignoring case and accents robustly
     products.sort((a, b) => {
-      const nameA = a.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      const nameB = b.name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+      return a.name.trim().replace(/\s+/g, ' ').localeCompare(b.name.trim().replace(/\s+/g, ' '), 'pt-BR', { sensitivity: 'base' });
     });
     
     return NextResponse.json(products);
