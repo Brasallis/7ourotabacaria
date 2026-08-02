@@ -17,6 +17,7 @@ import { CartProvider } from "@/components/CartContext";
 import Navbar from "@/components/Navbar";
 import AgeVerification from "@/components/AgeVerification";
 import CookieConsent from "@/components/CookieConsent";
+import ScrollToTop from "@/components/ScrollToTop";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -33,6 +34,7 @@ export default function RootLayout({
           <AgeVerification />
           <Navbar />
           {children}
+          <ScrollToTop />
           <CookieConsent />
         </CartProvider>
         <SpeedInsights />
