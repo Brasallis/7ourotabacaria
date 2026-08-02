@@ -3,9 +3,9 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 
-// Adicionar flag de revalidação e forçar dinâmico para evitar cache preso na Vercel
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+// A página inicial usará cache de borda (Edge Cache) da Vercel.
+// Ela será recarregada no fundo a cada 60 segundos se houver alguma mudança no banco.
+export const revalidate = 60;
 
 export default async function Home() {
   // Busca até 6 produtos que sejam destaques (isPromotion) ou que tenham desconto
