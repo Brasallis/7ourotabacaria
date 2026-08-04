@@ -45,6 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             src={(currentImage || product.imageUrl) as string}
             alt={product.name}
             fill
+            unoptimized
             style={{ objectFit: 'contain', padding: '1rem' }}
           />
         ) : (
@@ -81,14 +82,14 @@ export default function ProductCard({ product }: ProductCardProps) {
             onClick={() => setCurrentImage(product.imageUrl)}
             style={{ width: '45px', height: '45px', position: 'relative', borderRadius: '6px', overflow: 'hidden', border: currentImage === product.imageUrl ? '2px solid var(--gold-primary)' : '1px solid var(--glass-border)', cursor: 'pointer', transition: 'all 0.2s' }}
           >
-            <Image src={product.imageUrl || ''} alt="Thumb 1" fill style={{ objectFit: 'cover' }} />
+            <Image src={product.imageUrl || ''} alt="Thumb 1" fill unoptimized style={{ objectFit: 'cover' }} />
           </div>
           {product.imageUrl2 && (
             <div 
               onClick={() => setCurrentImage(product.imageUrl2)}
               style={{ width: '45px', height: '45px', position: 'relative', borderRadius: '6px', overflow: 'hidden', border: currentImage === product.imageUrl2 ? '2px solid var(--gold-primary)' : '1px solid var(--glass-border)', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <Image src={product.imageUrl2} alt="Thumb 2" fill style={{ objectFit: 'cover' }} />
+              <Image src={product.imageUrl2} alt="Thumb 2" fill unoptimized style={{ objectFit: 'cover' }} />
             </div>
           )}
           {product.imageUrl3 && (
@@ -96,7 +97,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               onClick={() => setCurrentImage(product.imageUrl3)}
               style={{ width: '45px', height: '45px', position: 'relative', borderRadius: '6px', overflow: 'hidden', border: currentImage === product.imageUrl3 ? '2px solid var(--gold-primary)' : '1px solid var(--glass-border)', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <Image src={product.imageUrl3} alt="Thumb 3" fill style={{ objectFit: 'cover' }} />
+              <Image src={product.imageUrl3} alt="Thumb 3" fill unoptimized style={{ objectFit: 'cover' }} />
             </div>
           )}
         </div>
