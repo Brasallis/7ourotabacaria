@@ -3,11 +3,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export type CartItem = {
-  id: string;
+  id: string; // unique item id in cart
+  productId?: string;
   name: string;
   price: number;
   quantity: number;
   imageUrl?: string;
+  selectedColor?: string;
+  selectedSize?: string;
+  selectedModel?: string;
 };
 
 type CartContextType = {
@@ -42,16 +46,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const addToCart = (product: Omit<CartItem, "quantity">) => {
+    // Unique key considering variants
+    const productId = product.productId || product.id;
+    const variantKey = `${productId}${product.selectedColor ? `_c:${product.selectedColor}` : ""}${product.selectedSize ? `_s:${product.selectedSize}` : ""}${product.selectedModel ? `_m:${product.selectedModel}` : ""}`;
+
     setItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find((item) => item.id === variantKey);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id
+          item.id === variantKey
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
-      return [...prev, { ...product, quantity: 1 }];
+      return [
+        ...prev,
+        {
+          ...product,
+          id: variantKey,
+          productId,
+          quantity: 1,
+        },
+      ];
     });
   };
 
@@ -94,7 +110,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 export function useCart() {
   const context = useContext(CartContext);
   if (context === undefined) {
-    throw new Error("useCart must be used within a CartProvider");
+    return {
+      items: [] as CartItem[],
+      addToCart: () => {},
+      removeFromCart: () => {},
+      updateQuantity: () => {},
+      clearCart: () => {},
+      total: 0,
+    };
   }
   return context;
 }

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 
 import { CartProvider } from "@/components/CartContext";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import AgeVerification from "@/components/AgeVerification";
 import CookieConsent from "@/components/CookieConsent";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -28,12 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body className={outfit.variable}>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={outfit.variable} suppressHydrationWarning>
         <CartProvider>
           <AgeVerification />
           <Navbar />
           {children}
+          <Footer />
           <ScrollToTop />
           <CookieConsent />
         </CartProvider>

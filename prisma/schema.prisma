@@ -32,6 +32,11 @@ model Product {
   isVisible        Boolean  @default(true)
   categoryId       String
   category         Category @relation(fields: [categoryId], references: [id])
+  colors           String[] @default([])
+  sizes            String[] @default([])
+  models           String[] @default([])
+  images           String[] @default([])
+  variantImages    Json?    @default("[]")
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }

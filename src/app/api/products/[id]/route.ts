@@ -10,8 +10,6 @@ const parsePrice = (val: any) => {
   if (str.includes(',')) {
     str = str.replace(/\./g, '').replace(',', '.');
   }
-  // Se não tiver vírgula, assume que é ponto decimal normal.
-  
   // Remove qualquer letra ou caractere invisível que possa causar erro
   str = str.replace(/[^0-9.-]/g, '');
   return parseFloat(str) || 0;
@@ -24,24 +22,48 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
+    const colors = Array.isArray(body.colors)
+      ? body.colors.map((c: any) => String(c).trim()).filter(Boolean)
+      : undefined;
+    const sizes = Array.isArray(body.sizes)
+      ? body.sizes.map((s: any) => String(s).trim()).filter(Boolean)
+      : undefined;
+    const models = Array.isArray(body.models)
+      ? body.models.map((m: any) => String(m).trim()).filter(Boolean)
+      : undefined;
+    const images = Array.isArray(body.images)
+      ? body.images.map((img: any) => String(img).trim()).filter(Boolean)
+      : undefined;
+
+    const updateData: any = {
+      name: body.name,
+      description: body.description,
+      price: parsePrice(body.price) || 0,
+      promotionalPrice: parsePrice(body.promotionalPrice),
+      imageUrl: (images && images[0]) || body.imageUrl || null,
+      imageUrl2: (images && images[1]) || body.imageUrl2 || null,
+      imageUrl3: (images && images[2]) || body.imageUrl3 || null,
+      isPromotion: body.isPromotion !== undefined ? body.isPromotion : false,
+      isVisible: body.isVisible !== undefined ? body.isVisible : true,
+      categoryId: body.categoryId,
+    };
+
+    if (colors !== undefined) updateData.colors = colors;
+    if (sizes !== undefined) updateData.sizes = sizes;
+    if (models !== undefined) updateData.models = models;
+    if (images !== undefined) updateData.images = images;
+    if (body.variantImages !== undefined) {
+      updateData.variantImages = Array.isArray(body.variantImages) ? body.variantImages : [];
+    }
+
     const product = await prisma.product.update({
       where: { id },
-      data: {
-        name: body.name,
-        description: body.description,
-        price: parsePrice(body.price) || 0,
-        promotionalPrice: parsePrice(body.promotionalPrice),
-        imageUrl: body.imageUrl || null,
-        imageUrl2: body.imageUrl2 || null,
-        imageUrl3: body.imageUrl3 || null,
-        isPromotion: body.isPromotion !== undefined ? body.isPromotion : false,
-        isVisible: body.isVisible !== undefined ? body.isVisible : true,
-        categoryId: body.categoryId,
-      },
+      data: updateData,
     });
     return NextResponse.json(product);
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Erro detalhado ao atualizar produto (PUT):", error);
+    return NextResponse.json({ error: error?.message || "Failed to update product" }, { status: 500 });
   }
 }
 

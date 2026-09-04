@@ -10,7 +10,15 @@ type Product = {
   name: string;
   description: string;
   price: number;
+  promotionalPrice?: number | null;
   imageUrl: string | null;
+  imageUrl2?: string | null;
+  imageUrl3?: string | null;
+  images?: string[];
+  variantImages?: any;
+  colors?: string[];
+  sizes?: string[];
+  models?: string[];
   categoryId: string;
 };
 

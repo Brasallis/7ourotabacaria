@@ -197,6 +197,9 @@
   .navLink {
     display: none;
   }
+  .addressLabel {
+    display: none;
+  }
   .cartBtn {
     width: 45px;
     height: 45px;

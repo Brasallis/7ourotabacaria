@@ -70,7 +70,12 @@ export default function CartPage() {
 
     message += `\n*ITENS:*\n`;
     items.forEach((item) => {
-      message += `- ${item.quantity}x ${item.name} (${formatCurrency(item.price)})\n`;
+      const variantDetails: string[] = [];
+      if (item.selectedColor) variantDetails.push(`Cor: ${item.selectedColor}`);
+      if (item.selectedSize) variantDetails.push(`Tam: ${item.selectedSize}`);
+      if (item.selectedModel) variantDetails.push(`Mod: ${item.selectedModel}`);
+      const variantStr = variantDetails.length > 0 ? ` [${variantDetails.join(' | ')}]` : '';
+      message += `- ${item.quantity}x ${item.name}${variantStr} (${formatCurrency(item.price)})\n`;
     });
 
     message += `\n*RESUMO DOS PRODUTOS:*\n`;
@@ -116,8 +121,27 @@ export default function CartPage() {
                     <div style={{ width: '60px', height: '60px', background: 'var(--glass-bg)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: '0.7rem' }}>Sem foto</div>
                   )}
                   <div className={styles.itemInfo} style={{ flexGrow: 1 }}>
-                    <h3>{item.name}</h3>
-                    <p className="gold-text">{formatCurrency(item.price)}</p>
+                    <h3 style={{ margin: 0, fontSize: '1rem' }}>{item.name}</h3>
+                    {(item.selectedColor || item.selectedSize || item.selectedModel) && (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '4px', fontSize: '0.75rem' }}>
+                        {item.selectedColor && (
+                          <span style={{ padding: '1px 6px', background: 'rgba(212,175,55,0.15)', color: 'var(--gold-primary)', borderRadius: '4px', border: '1px solid rgba(212,175,55,0.3)' }}>
+                            Cor: {item.selectedColor}
+                          </span>
+                        )}
+                        {item.selectedSize && (
+                          <span style={{ padding: '1px 6px', background: 'rgba(59,130,246,0.15)', color: '#60a5fa', borderRadius: '4px', border: '1px solid rgba(59,130,246,0.3)' }}>
+                            Tam: {item.selectedSize}
+                          </span>
+                        )}
+                        {item.selectedModel && (
+                          <span style={{ padding: '1px 6px', background: 'rgba(168,85,247,0.15)', color: '#c084fc', borderRadius: '4px', border: '1px solid rgba(168,85,247,0.3)' }}>
+                            Mod: {item.selectedModel}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <p className="gold-text" style={{ marginTop: '4px', marginBottom: 0 }}>{formatCurrency(item.price)}</p>
                   </div>
                   <div className={styles.itemActions}>
                     <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
